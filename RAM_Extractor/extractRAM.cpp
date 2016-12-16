@@ -68,8 +68,9 @@
 // END OF KEY DEFINITIONS //
 ////////////////////////////
 
-#define RAM_FILE "ramExtract.csv"
-#define RAM_FILE_BINARY "binRAMExtract.csv"
+#define RAM_FILE "ramExtract_"
+#define RAM_FILE_BINARY "binRAMExtract_"
+#define FILE_TERMINATION ".csv"
 
 #define INPUT_KEYBOARD "/dev/input/event3"
 
@@ -301,7 +302,24 @@ void initRamVector() {
    }
 }
 
-void initialize() {
+string parseName(char* nameOfGame) {
+  string aux = nameOfGame;
+  int dotIndex = aux.size();
+  int slashindex = 0;
+
+  for(int i=dotIndex; i > 0; --i) {
+    if(aux[i] == '.')
+      dotIndex = i;
+    else if(aux[i] == '/') {
+      slashindex = i;
+      break; //We have found wat we needed
+    }
+  }
+
+  return aux.substr(slashindex+1, dotIndex-slashindex-1);
+}
+
+void initialize(char* nameOfGame) {
    struct sigaction sigIntHandler;
 
    sigIntHandler.sa_handler = ctrlCHandler;
@@ -318,8 +336,10 @@ void initialize() {
 
    initRamVector();
 
-   file.open(RAM_FILE);
-   fileBin.open(RAM_FILE_BINARY);
+   std::string name = parseName(nameOfGame);
+
+   file.open(RAM_FILE+name+FILE_TERMINATION);
+   fileBin.open(RAM_FILE_BINARY+name+FILE_TERMINATION);
 }
 
 
@@ -333,7 +353,7 @@ int main(int argc, char **argv) {
       return -1;
    }
 
-   initialize();
+   initialize(argv[1]);
 
    // Create alei object.
    alei.setInt("random_seed", SEED);
