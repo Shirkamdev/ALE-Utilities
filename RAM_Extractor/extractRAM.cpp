@@ -72,7 +72,7 @@
 #define RAM_FILE_BINARY "binRAMExtract_"
 #define FILE_TERMINATION ".csv"
 
-#define INPUT_KEYBOARD "/dev/input/event3"
+#define INPUT_KEYBOARD "/dev/input/event2"
 
 static const char *const evval[3] = {
     "RELEASED",
@@ -231,13 +231,87 @@ void keyboardRead() {
     fprintf(stderr, "%s.\n", strerror(errno));
 }
 
+inline const char * const BoolToString(bool b)
+{
+  return b ? "1" : "0";
+}
 
 void agentStep(){
    static int wide = 9;
    float reward = 0;
    
-   //HERE we read from the key buffer that gives us the thread
+   std::string transform;
+   transform+=BoolToString(keys[KEY_UP]);
+   transform+=BoolToString(keys[KEY_DOWN]);
+   transform+=BoolToString(keys[KEY_LEFT]);
+   transform+=BoolToString(keys[KEY_RIGHT]);
+   transform+=BoolToString(keys[KEY_FIRE]);
 
+   int eval=atoi(transform.c_str());
+
+   //String gets from the order above [UP,DOWN,LEFT,RIHT,FIRE]
+   
+   switch(eval){
+   	case 10000:
+   		alei.act(PLAYER_A_UP);
+   		break;
+   	case 1000:
+   		alei.act(PLAYER_A_DOWN);
+   		break;
+   	case 100:
+   		alei.act(PLAYER_A_LEFT);
+   		break;
+   	case 10:
+   		alei.act(PLAYER_A_RIGHT);
+   		break;
+   	case 10100:
+   		alei.act(PLAYER_A_UPLEFT);
+   		break;
+   	case 10010:
+   		alei.act(PLAYER_A_UPRIGHT);
+   		break;
+   	case 1100:
+   		alei.act(PLAYER_A_DOWNLEFT);
+   		break;
+   	case 1010:
+   		alei.act(PLAYER_A_DOWNRIGHT);
+   		break;
+   	
+   	case 1:
+   		alei.act(PLAYER_A_FIRE);
+   		break;
+
+   	case 10001:
+   		alei.act(PLAYER_A_UPFIRE);
+   		break;
+   	case 1001:
+   		alei.act(PLAYER_A_DOWNFIRE);
+   		break;
+   	case 101:
+   		alei.act(PLAYER_A_LEFTFIRE);
+   		break;
+   	case 11:
+   		alei.act(PLAYER_A_RIGHTFIRE);
+   		break;
+   	case 10101:
+   		alei.act(PLAYER_A_UPLEFTFIRE);
+   		break;
+   	case 10011:
+   		alei.act(PLAYER_A_UPRIGHTFIRE);
+   		break;
+   	case 1101:
+   		alei.act(PLAYER_A_DOWNLEFTFIRE);
+   		break;
+   	case 1011:
+   		alei.act(PLAYER_A_DOWNRIGHTFIRE);
+   		break;
+
+   	default:
+   		break;
+   }
+   
+   //HERE we read from the key buffer that gives us the thread
+   /*
    if(keys[KEY_DOWN] && keys[KEY_LEFT] && keys[KEY_FIRE]) {
     alei.act(PLAYER_A_DOWNLEFTFIRE);
    }
@@ -290,7 +364,7 @@ void agentStep(){
    else if(keys[KEY_FIRE]) {
     alei.act(PLAYER_A_FIRE);
    }
-
+	*/
    //Last, a requirement of the library, to prevent strange behaviors
    alei.act(PLAYER_A_NOOP);
 }
@@ -362,7 +436,7 @@ int main(int argc, char **argv) {
    alei.setBool("sound", SOUND);
    alei.loadROM(argv[1]);   
 
-   STDP::Inicializar();
+   //STDP::Inicializar();
 
    //Starting to read keyboard
    lector = std::thread(keyboardRead);
@@ -372,7 +446,7 @@ int main(int argc, char **argv) {
         !alei.game_over() && step < MAX_STEPS; 
         ++step) 
    {
-      printRam();
+     // printRam();
       agentStep();
       ramToFile();
 
