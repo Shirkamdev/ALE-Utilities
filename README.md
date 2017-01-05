@@ -1,3 +1,7 @@
+############################
+## CREATED BY: SHIRKAMDEV ##
+############################
+
 # ALE-Utilities
 This repository tries to provide various tools to anyone using the Arcade Learning Environment.
 

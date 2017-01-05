@@ -1,3 +1,8 @@
+###############################
+## CREATED BY: SHIRKAMDEV 	 ##
+## DEBUGGING BY: REYESELDA95 ##
+###############################
+
 -- RAM EXTRACTOR --
 
 

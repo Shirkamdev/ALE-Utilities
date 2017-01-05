@@ -1,7 +1,8 @@
 /*
   This program was indented to help any ALE developer.
 
-  Copyright (C) 2016 Shirkamdev Xnetrix 
+  Made by Shirkamdev
+    Debugging and small fixes by Reyeselda95
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -73,6 +74,7 @@
 
 #define RAM_FILE "ramExtract_"
 #define RAM_FILE_BINARY "binRAMExtract_"
+#define RAM_FILE_0_TO_1 "per1Extract_"
 #define FILE_TERMINATION ".csv"
 
 
@@ -92,7 +94,7 @@ ALEInterface alei;
 bool keys[N_KEYS];
 short delayToFPS;
 
-ofstream file, fileBin;
+ofstream file, fileBin, filePer1;
 
 std::thread lector;
 
@@ -167,33 +169,50 @@ void printRam(){
 }
 
 void ramToFile(std::string name) {
-    //Printing in HEX (0x)
+  
+  //Printing in HEX (0x)
 	file.open(RAM_FILE+name+FILE_TERMINATION,ios::out | ios::app);
 	for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
 	  int valor = alei.getRAM().get(i);
-	  file << valor;
-	  //file << std::hex << valor;
+	  //file << valor;
+	  file << std::hex << valor;
 	  if(i != NUM_BYTES_RAM-1) {
-	     file << ";";
+	     file << ",";
 	  }
 	  else {
 	     file << "\n"; //Last value to print (CSV format)
 	  }
 	}
 	file.close();
+
+
 	//Printing in binnary
-	/*fileBin.open(RAM_FILE_BINARY+name+FILE_TERMINATION, ios::out | ios::app);
+	fileBin.open(RAM_FILE_BINARY+name+FILE_TERMINATION, ios::out | ios::app);
 	for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
 	  int valor = alei.getRAM().get(i);
 	  fileBin << std::bitset<8>(valor);
 	  if(i != NUM_BYTES_RAM-1) {
-	     fileBin << ";";
+	     fileBin << ",";
 	  }
 	  else {
-	     fileBin << "\n"; //
+	     fileBin << "\n"; //Last value to print (CSV format)
 	  }
 	}
-	fileBin.close();*/
+	fileBin.close();
+
+  filePer1.open(RAM_FILE_0_TO_1+name+FILE_TERMINATION, ios::out | ios::app);
+  for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
+    int valor = alei.getRAM().get(i);
+    filePer1 << (double) valor/255.0;
+    if(i != NUM_BYTES_RAM-1) {
+       filePer1 << ",";
+    }
+    else {
+       filePer1 << "\n"; //Last value to print (CSV format)
+    }
+  }
+  filePer1.close();
+
 }
 
 std::string exec(const char* cmd) {
