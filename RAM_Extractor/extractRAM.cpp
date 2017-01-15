@@ -174,20 +174,20 @@ void ramToFile(std::string name) {
 	file.open(RAM_FILE+name+FILE_TERMINATION,ios::out | ios::app);
 	for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
 	  int valor = alei.getRAM().get(i);
-	  //file << valor;
-	  file << std::hex << valor;
+	  file << valor;
+	  //file << std::hex << valor;
 	  if(i != NUM_BYTES_RAM-1) {
-	     file << ",";
+	     file << ";";
 	  }
 	  else {
-	     file << "\n"; //Last value to print (CSV format)
+	  //   file << "\n"; //Last value to print (CSV format)
 	  }
 	}
 	file.close();
 
 
 	//Printing in binnary
-	fileBin.open(RAM_FILE_BINARY+name+FILE_TERMINATION, ios::out | ios::app);
+	/*fileBin.open(RAM_FILE_BINARY+name+FILE_TERMINATION, ios::out | ios::app);
 	for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
 	  int valor = alei.getRAM().get(i);
 	  fileBin << std::bitset<8>(valor);
@@ -198,17 +198,17 @@ void ramToFile(std::string name) {
 	     fileBin << "\n"; //Last value to print (CSV format)
 	  }
 	}
-	fileBin.close();
+	fileBin.close();*/
 
   filePer1.open(RAM_FILE_0_TO_1+name+FILE_TERMINATION, ios::out | ios::app);
   for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
     int valor = alei.getRAM().get(i);
     filePer1 << (double) valor/255.0;
     if(i != NUM_BYTES_RAM-1) {
-       filePer1 << ",";
+       filePer1 << ";";
     }
     else {
-       filePer1 << "\n"; //Last value to print (CSV format)
+    //   filePer1 << "\n"; //Last value to print (CSV format)
     }
   }
   filePer1.close();
@@ -279,7 +279,7 @@ inline const char * const BoolToString(bool b)
   return b ? "1" : "0";
 }
 
-void agentStep(){
+void agentStep(std::string name){
    static int wide = 9;
    float reward = 0;
    
@@ -380,6 +380,19 @@ void agentStep(){
    		break;
    }
    
+   	ramToFile(name);
+	file.open(RAM_FILE+name+FILE_TERMINATION,ios::out | ios::app);
+	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
+	file.close();
+
+	/*file.open(RAM_FILE_BINARY+name+FILE_TERMINATION,ios::out | ios::app);
+	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
+	file.close();*/
+
+	file.open(RAM_FILE_0_TO_1=+name+FILE_TERMINATION,ios::out | ios::app);
+	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
+	file.close();
+
    //HERE we read from the key buffer that gives us the thread
    /*
    if(keys[KEY_DOWN] && keys[KEY_LEFT] && keys[KEY_FIRE]) {
@@ -509,8 +522,7 @@ int main(int argc, char **argv) {
 	{
 
 		printRam();
-		agentStep();
-		ramToFile(name);
+		agentStep(name);
 
 		std::this_thread::sleep_for (std::chrono::milliseconds(delayToFPS));
 	}
