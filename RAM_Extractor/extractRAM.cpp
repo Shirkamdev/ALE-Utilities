@@ -381,7 +381,7 @@ void agentStep(std::string name){
    }
    
    	ramToFile(name);
-	file.open(RAM_FILE+name+FILE_TERMINATION,ios::out | ios::app);
+	file.open(RAM_FILE + name + FILE_TERMINATION, ios::out | ios::app);
 	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
 	file.close();
 
@@ -389,7 +389,7 @@ void agentStep(std::string name){
 	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
 	file.close();*/
 
-	file.open(RAM_FILE_0_TO_1=+name+FILE_TERMINATION,ios::out | ios::app);
+	file.open(RAM_FILE_0_TO_1 + name + FILE_TERMINATION, ios::out | ios::app);
 	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
 	file.close();
 
