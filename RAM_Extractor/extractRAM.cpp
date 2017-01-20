@@ -62,11 +62,63 @@
 // KEY DEFINITIONS //
 /////////////////////
 
-#define KEY_UP 72 //8 del teclado numerico
-#define KEY_DOWN 80 //2 del teclado numerico
-#define KEY_LEFT 75 //4 del teclado numerico
-#define KEY_RIGHT 77 //6 del teclado numerico
-#define KEY_FIRE 57 //SPACE
+#define A 30
+#define B 48
+#define C 46
+#define D 32
+#define E 18
+#define F 33
+#define G 34
+#define H 35
+#define I 23
+#define J 36
+#define K 37
+#define L 38
+#define M 50
+#define N 49
+#define SPANISH_N 39
+#define O 24
+#define P 25
+#define Q 16
+#define R 19
+#define S 31
+#define T 20
+#define U 22
+#define V 47
+#define W 17
+#define X 45
+#define Y 21
+#define Z 44
+#define NUMBER_1 2
+#define NUMBER_2 3
+#define NUMBER_3 4
+#define NUMBER_4 5
+#define NUMBER_5 6
+#define NUMBER_6 7
+#define NUMBER_7 8
+#define NUMBER_8 9
+#define NUMBER_9 10
+#define NUMBER_0 11
+#define APOSTROPH 12
+#define EXCLAMATION 13
+#define LEFT_ACCENT 26
+#define PLUS 27
+#define RIGHT_ACCENT 40
+#define SPECIAL_C 43
+#define COMMA 51
+#define DOT 52
+#define MINUS 53
+#define SPACE 57
+
+///////////////
+// USED KEYS //
+///////////////
+
+#define KEY_UP W
+#define KEY_DOWN S
+#define KEY_LEFT A
+#define KEY_RIGHT D
+#define KEY_FIRE SPACE
 
 ////////////////////////////
 // END OF KEY DEFINITIONS //
@@ -172,6 +224,7 @@ void ramToFile(std::string name) {
   
   //Printing in HEX (0x)
 	file.open(RAM_FILE+name+FILE_TERMINATION,ios::out | ios::app);
+
 	for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
 	  int valor = alei.getRAM().get(i);
 	  file << valor;
@@ -200,6 +253,7 @@ void ramToFile(std::string name) {
 	}
 	fileBin.close();*/
 
+  //Write in values from 0 to 1
   filePer1.open(RAM_FILE_0_TO_1+name+FILE_TERMINATION, ios::out | ios::app);
   for(int i = 0 ;i < NUM_BYTES_RAM; ++i) {
     int valor = alei.getRAM().get(i);
@@ -380,74 +434,15 @@ void agentStep(std::string name){
    		break;
    }
    
-   	ramToFile(name);
+   
+  ramToFile(name);
 	file.open(RAM_FILE + name + FILE_TERMINATION, ios::out | ios::app);
 	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
 	file.close();
 
-	/*file.open(RAM_FILE_BINARY+name+FILE_TERMINATION,ios::out | ios::app);
-	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
-	file.close();*/
-
 	file.open(RAM_FILE_0_TO_1 + name + FILE_TERMINATION, ios::out | ios::app);
 	file <<";"<<BoolToString(keys[KEY_UP]) << ";" << BoolToString(keys[KEY_DOWN])<<";"<<BoolToString(keys[KEY_LEFT])<<";"<<BoolToString(keys[KEY_RIGHT])<<";"<<BoolToString(keys[KEY_FIRE]) << "\n";
 	file.close();
-
-   //HERE we read from the key buffer that gives us the thread
-   /*
-   if(keys[KEY_DOWN] && keys[KEY_LEFT] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_DOWNLEFTFIRE);
-   }
-   else if(keys[KEY_DOWN] && keys[KEY_RIGHT] && keys[KEY_FIRE]) {
-    //PLAYER_A_DOWNRIGHTFIRE
-    alei.act(PLAYER_A_DOWNRIGHTFIRE);
-   }
-   else if(keys[KEY_UP] && keys[KEY_LEFT] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_UPLEFTFIRE);
-   }
-   else if(keys[KEY_UP] && keys[KEY_RIGHT] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_UPRIGHTFIRE);
-   }
-   else if(keys[KEY_DOWN] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_DOWNFIRE);
-   }
-   else if(keys[KEY_LEFT] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_LEFTFIRE);
-   }
-   else if(keys[KEY_RIGHT] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_RIGHTFIRE);
-   }
-   else if(keys[KEY_UP] && keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_UPFIRE);
-   }
-   else if(keys[KEY_DOWN] && keys[KEY_LEFT]) {
-    alei.act(PLAYER_A_DOWNLEFT);
-   }
-   else if(keys[KEY_DOWN] && keys[KEY_RIGHT]) {
-    alei.act(PLAYER_A_DOWNRIGHT);
-   }
-   else if(keys[KEY_UP] && keys[KEY_LEFT]) {
-    alei.act(PLAYER_A_UPLEFT);
-   }
-   else if(keys[KEY_UP] && keys[KEY_RIGHT]) {
-    alei.act(PLAYER_A_UPRIGHT);
-   }
-   else if(keys[KEY_DOWN]) {
-    alei.act(PLAYER_A_DOWN);
-   }
-   else if(keys[KEY_LEFT]) {
-    alei.act(PLAYER_A_LEFT);
-   }
-   else if(keys[KEY_RIGHT]) {
-    alei.act(PLAYER_A_RIGHT);
-   }
-   else if(keys[KEY_UP]) {
-    alei.act(PLAYER_A_UP);
-   }
-   else if(keys[KEY_FIRE]) {
-    alei.act(PLAYER_A_FIRE);
-   }
-	*/   
 }
 
 void initRamVector() {
